@@ -3,6 +3,8 @@ import {
   Database,
 } from "https://deno.land/x/mongo@v0.31.1/mod.ts";
 
+import { config } from "https://deno.land/x/dotenv/mod.ts";
+
 let db: Database;
 
 const connect = async () => {
@@ -10,7 +12,9 @@ const connect = async () => {
 
   // Connect using srv url
   await client.connect(
-    "mongodb+srv://admin:tiktik123@cluster0.yz6eyqz.mongodb.net/?authMechanism=SCRAM-SHA-1"
+    `mongodb+srv://${config().MONGODB_USERNAME}:${
+      config().MONGODB_PASSWORD
+    }@cluster0.yz6eyqz.mongodb.net/?authMechanism=SCRAM-SHA-1`
   );
   db = client.database("todo-app");
 };
