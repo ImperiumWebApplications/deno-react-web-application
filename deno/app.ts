@@ -1,22 +1,27 @@
 import { Application } from "https://deno.land/x/oak/mod.ts";
 
-import todosRoutes from './routes/todos.ts';
+import todosRoutes from "./routes/todos.ts";
+import { connect } from "./helpers/db_client.ts";
 
 const app = new Application();
 
+connect();
+
 app.use(async (ctx, next) => {
-  console.log('Middleware!');
+  console.log("Middleware!");
   await next();
 });
 
 // Allow CORS
 app.use(async (ctx, next) => {
-  ctx.response.headers.set('Access-Control-Allow-Origin', '*');
-  ctx.response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  ctx.response.headers.set('Access-Control-Allow-Headers', 'Content-Type');
+  ctx.response.headers.set("Access-Control-Allow-Origin", "*");
+  ctx.response.headers.set(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE"
+  );
+  ctx.response.headers.set("Access-Control-Allow-Headers", "Content-Type");
   await next();
 });
-
 
 app.use(todosRoutes.routes());
 app.use(todosRoutes.allowedMethods());
